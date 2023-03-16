@@ -12,7 +12,30 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+class Singer {
+  String img = "";
+  String name = "";
+  String album = "";
+
+  Singer(this.img, this.name, this.album);
+}
+
 class _HomePageState extends State<HomePage> {
+  final List<Singer> popularSingers = [
+    Singer("assets/rectangle_2.png", "Talyor", ""),
+    Singer("assets/rectangle_3.png", "Cardi B", ""),
+    Singer("assets/rectangle_4.png", "Lopez", ""),
+    Singer("assets/rectangle_2.png", "Talyor", ""),
+    Singer("assets/rectangle_3.png", "Cardi B", ""),
+    Singer("assets/rectangle_4.png", "Lopez", ""),
+  ];
+
+  final List<Singer> newSingers = [
+    Singer("assets/rectangle_5.png", "Annie", "Nice"),
+    Singer("assets/rectangle_6.png", "Lenor", "Challenge"),
+    Singer("assets/rectangle_7.png", "James", "Being With"),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,9 +119,10 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(
-                  height: 500,
+                  height: 530,
                   child: TabBarView(
                     children: [
+                      // >>> Recently
                       Column(
                         children: [
                           const SizedBox(height: 50),
@@ -127,8 +151,15 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
+                      // >>>>Popular
+                      Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          PopularTop(popularSingers: popularSingers),
+                          PopularBottom(newSingers: newSingers),
+                        ],
+                      ),
                       const Text("tab2 body"),
-                      const Text("tab3 body"),
                       const Text("tab4 body"),
                     ],
                   ))
@@ -137,7 +168,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(top: 4, left: 20, right: 20, bottom: 20),
         child: Container(
             height: 100,
             decoration: BoxDecoration(
@@ -155,6 +186,155 @@ class _HomePageState extends State<HomePage> {
                 Icon(CustomIcons.heart_icon, color: Colors.white, size: 37),
               ],
             )),
+      ),
+    );
+  }
+}
+
+class PopularBottom extends StatelessWidget {
+  final List<Singer> newSingers;
+
+  const PopularBottom({
+    super.key,
+    required this.newSingers,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "New",
+            style: Style.smallFont.copyWith(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 310,
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: newSingers.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 88,
+                                height: 88,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      newSingers[index].img,
+                                    ),
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.center,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(newSingers[index].name,
+                                      style: Style.smallFont.copyWith(
+                                          fontWeight: FontWeight.w500)),
+                                  SizedBox(height: 8),
+                                  Text(newSingers[index].album,
+                                      style: Style.smallFont.copyWith(
+                                          color: Palette.lightGrey,
+                                          fontWeight: FontWeight.w500)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(Icons.more_vert),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PopularTop extends StatelessWidget {
+  const PopularTop({
+    super.key,
+    required this.popularSingers,
+  });
+
+  final List<Singer> popularSingers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 18.0,
+      ),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: 170,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: popularSingers.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(
+                left: 8,
+                right: 8,
+                top: 12,
+                bottom: 12,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: 114,
+                    height: 114,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          popularSingers[index].img,
+                        ),
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    popularSingers[index].name,
+                    style: Style.smallFont.copyWith(
+                      fontSize: 16,
+                      color: Palette.darkGrey,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
