@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/config/palette.dart';
 import 'package:music_app/custom_icons_icons.dart';
+import 'package:music_app/pages/play_page.dart';
 
 import '../config/style.dart';
 
@@ -12,7 +13,30 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+class Singer {
+  String img = "";
+  String name = "";
+  String album = "";
+
+  Singer(this.img, this.name, this.album);
+}
+
 class _HomePageState extends State<HomePage> {
+  final List<Singer> popularSingers = [
+    Singer("assets/rectangle_2.png", "Talyor", ""),
+    Singer("assets/rectangle_3.png", "Cardi B", ""),
+    Singer("assets/rectangle_4.png", "Lopez", ""),
+    Singer("assets/rectangle_2.png", "Talyor", ""),
+    Singer("assets/rectangle_3.png", "Cardi B", ""),
+    Singer("assets/rectangle_4.png", "Lopez", ""),
+  ];
+
+  final List<Singer> newSingers = [
+    Singer("assets/rectangle_5.png", "Annie", "Nice"),
+    Singer("assets/rectangle_6.png", "Lenor", "Challenge"),
+    Singer("assets/rectangle_7.png", "James", "Being With"),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +44,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: const Icon(Icons.arrow_back_ios, color: Colors.black),
+        leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(Icons.arrow_back_ios, color: Colors.black)),
         title: CupertinoSearchTextField(
           borderRadius: BorderRadius.circular(30),
           prefixInsets: const EdgeInsets.only(right: 8, left: 16),
@@ -96,38 +122,18 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(
-                  height: 500,
+                  height: 515,
                   child: TabBarView(
                     children: [
-                      Column(
-                        children: [
-                          const SizedBox(height: 50),
-                          Container(
-                            width: 308,
-                            height: 348,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              image: const DecorationImage(
-                                image: AssetImage("assets/rectangle_1.png"),
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Bad guy",
-                            style: Style.mediumFont
-                                .copyWith(fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Billie eilish",
-                            style: Style.mediumFont
-                                .copyWith(color: Palette.lightGrey),
-                          ),
-                        ],
-                      ),
-                      const Text("tab2 body"),
+                      // >>>> Recently Tab
+                      const RecentlyTab(),
+
+                      // >>>> Popular Tab
+                      Column(children: [
+                        PopularTop(popularSingers: popularSingers),
+                        PopularBottom(newSingers: newSingers),
+                      ]),
+
                       const Text("tab3 body"),
                       const Text("tab4 body"),
                     ],
@@ -146,16 +152,206 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                Icon(CustomIcons.search_icon, color: Colors.white, size: 37),
-                Icon(CustomIcons.disc_icon, color: Colors.white, size: 37),
-                Icon(CustomIcons.head_phone_icon,
+              children: [
+                const Icon(CustomIcons.search_icon,
                     color: Colors.white, size: 37),
-                Icon(CustomIcons.music_icon, color: Colors.white, size: 37),
-                Icon(CustomIcons.heart_icon, color: Colors.white, size: 37),
+                const Icon(CustomIcons.disc_icon,
+                    color: Colors.white, size: 37),
+                InkWell(
+                  onTap: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PlayPage(),
+                      ),
+                    ),
+                  },
+                  child: const Icon(CustomIcons.head_phone_icon,
+                      color: Colors.white, size: 37),
+                ),
+                const Icon(CustomIcons.music_icon,
+                    color: Colors.white, size: 37),
+                const Icon(CustomIcons.heart_icon,
+                    color: Colors.white, size: 37),
               ],
             )),
       ),
+    );
+  }
+}
+
+class PopularBottom extends StatelessWidget {
+  const PopularBottom({
+    super.key,
+    required this.newSingers,
+  });
+
+  final List<Singer> newSingers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "New",
+            style: Style.smallFont
+                .copyWith(fontSize: 20, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 310,
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: newSingers.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 88,
+                                height: 88,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  image: DecorationImage(
+                                    image: AssetImage(newSingers[index].img),
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.center,
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    newSingers[index].name,
+                                    style: Style.smallFont
+                                        .copyWith(fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    newSingers[index].album,
+                                    style: Style.smallFont.copyWith(
+                                        color: Palette.lightGrey,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(Icons.more_vert),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PopularTop extends StatelessWidget {
+  const PopularTop({
+    super.key,
+    required this.popularSingers,
+  });
+
+  final List<Singer> popularSingers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      child: SizedBox(
+        width: double.infinity,
+        height: 170,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: popularSingers.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(
+                left: 8,
+                right: 8,
+                top: 12,
+                bottom: 12,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: 114,
+                    height: 114,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      image: DecorationImage(
+                        image: AssetImage(popularSingers[index].img),
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    popularSingers[index].name,
+                    style: Style.smallFont
+                        .copyWith(fontSize: 16, color: Palette.darkGrey),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class RecentlyTab extends StatelessWidget {
+  const RecentlyTab({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 50),
+        Container(
+          width: 308,
+          height: 348,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            image: const DecorationImage(
+              image: AssetImage("assets/rectangle_1.png"),
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          "Bad guy",
+          style: Style.mediumFont.copyWith(fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          "Billie eilish",
+          style: Style.mediumFont.copyWith(color: Palette.lightGrey),
+        ),
+      ],
     );
   }
 }
