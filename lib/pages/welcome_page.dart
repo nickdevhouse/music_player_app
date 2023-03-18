@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:music_app/config/palette.dart';
 import 'package:music_app/config/style.dart';
 
+import 'home_page.dart';
+
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
 
@@ -57,17 +59,27 @@ class _WelcomePageState extends State<WelcomePage> {
             const SizedBox(height: 30),
             Image.asset("assets/girl_enjoy_music.png"),
             const SizedBox(height: 30),
-            Container(
-              width: 193,
-              height: 60,
-              decoration: BoxDecoration(
-                color: Palette.primary,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Center(
-                child: Text(
-                  "Let's go",
-                  style: Style.mediumFont.copyWith(color: Colors.white),
+            InkWell(
+              onTap: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                ),
+              },
+              child: Container(
+                width: 193,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Palette.primary,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Center(
+                  child: Text(
+                    "Let's go",
+                    style: Style.mediumFont.copyWith(color: Colors.white),
+                  ),
                 ),
               ),
             )
