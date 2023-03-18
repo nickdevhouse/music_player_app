@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/config/palette.dart';
 import 'package:music_app/custom_icons_icons.dart';
+import 'package:music_app/pages/play_page.dart';
 
 import '../config/style.dart';
 
@@ -43,7 +44,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: const Icon(Icons.arrow_back_ios, color: Colors.black),
+        leading: InkWell(
+          onTap: () => Navigator.pop(context),
+          child: const Icon(Icons.arrow_back_ios, color: Colors.black),
+        ),
         title: CupertinoSearchTextField(
           borderRadius: BorderRadius.circular(30),
           prefixInsets: const EdgeInsets.only(right: 8, left: 16),
@@ -177,13 +181,25 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                Icon(CustomIcons.search_icon, color: Colors.white, size: 37),
-                Icon(CustomIcons.disc_icon, color: Colors.white, size: 37),
-                Icon(CustomIcons.head_phone_icon,
+              children: [
+                const Icon(CustomIcons.search_icon,
                     color: Colors.white, size: 37),
-                Icon(CustomIcons.music_icon, color: Colors.white, size: 37),
-                Icon(CustomIcons.heart_icon, color: Colors.white, size: 37),
+                const Icon(CustomIcons.disc_icon,
+                    color: Colors.white, size: 37),
+                InkWell(
+                  onTap: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PlayPage()),
+                    )
+                  },
+                  child: const Icon(CustomIcons.head_phone_icon,
+                      color: Colors.white, size: 37),
+                ),
+                const Icon(CustomIcons.music_icon,
+                    color: Colors.white, size: 37),
+                const Icon(CustomIcons.heart_icon,
+                    color: Colors.white, size: 37),
               ],
             )),
       ),
@@ -252,7 +268,7 @@ class PopularBottom extends StatelessWidget {
                                   Text(newSingers[index].name,
                                       style: Style.smallFont.copyWith(
                                           fontWeight: FontWeight.w500)),
-                                  SizedBox(height: 8),
+                                  const SizedBox(height: 8),
                                   Text(newSingers[index].album,
                                       style: Style.smallFont.copyWith(
                                           color: Palette.lightGrey,
