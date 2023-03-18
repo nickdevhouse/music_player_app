@@ -1,6 +1,8 @@
 # Music Player App
 
-This project is a Flutter quick code project base on Figma Community design.
+YouTube: [Flutter + Neovim : Music Player App UI Quick Code](https://youtu.be/4RrqWIlKoq8).
+
+This project is a Flutter quick code project base on ANANDU KRISHNA's great work: - [Figma Community design by ANANDU KRISHNA](https://www.figma.com/community/file/1110531417005100310/music).
 
 ### OutCome:
 ![Outcome 01](./demo_images/cover_01.png)
